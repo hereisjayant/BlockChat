@@ -165,10 +165,24 @@ router
             {
                 const data = JSON.parse(await keyStorage.decryptFiles());
                 await rebuildSecrets(data);
-            } catch (err) {}
+            } catch (err) {
+                return res.sendStatus(403)
+            }
             return res.sendStatus(200);
         } else
             return res.sendStatus(403);
+    })
+
+    /**
+     * Check if password was previously set
+     */
+    .post('/passwordPreviouslySet', async (req, res) => {
+        const check = await keyStorage.checkPassword(req.body.password);
+        if (check) {
+            return res.sendStatus(403);
+        } else {
+            return res.sendStatus(200);
+        }
     })
 
     /**
