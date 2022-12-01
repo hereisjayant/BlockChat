@@ -145,7 +145,7 @@ router
 
     /**
      * Create password to use to encrypt secrets
-     * @bodyParam {string} password
+     * @bodyParam {string} passwordcheckP
      */
     .post('/createPassword', async (req, res) => {
         await keyStorage.createPassword(req.body.password);
@@ -165,9 +165,7 @@ router
             {
                 const data = JSON.parse(await keyStorage.decryptFiles());
                 await rebuildSecrets(data);
-            } catch (err) {
-                return res.sendStatus(403)
-            }
+            } catch (err) {}
             return res.sendStatus(200);
         } else
             return res.sendStatus(403);
@@ -177,11 +175,11 @@ router
      * Check if password was previously set
      */
     .post('/passwordPreviouslySet', async (req, res) => {
-        const check = await keyStorage.checkPassword(req.body.password);
+        const check = await keyStorage.checkPasswordFileExists();
         if (check) {
-            return res.sendStatus(403);
-        } else {
             return res.sendStatus(200);
+        } else {
+            return res.sendStatus(403);
         }
     })
 

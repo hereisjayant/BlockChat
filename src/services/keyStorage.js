@@ -127,6 +127,11 @@ async function decryptFiles()
     return (new TextDecoder).decode(plaintext);
 }
 
+async function checkPasswordFileExists()
+{
+    return fs.existsSync(hashFile);
+}
+
 async function main() {
     const password = "asdf";
     await createPassword(password);
@@ -144,4 +149,4 @@ async function main() {
 
 //main();
 
-export default {createPassword, checkPassword, encryptFiles, decryptFiles};
+export default {createPassword, checkPassword, encryptFiles, decryptFiles, checkPasswordFileExists};

@@ -1,5 +1,7 @@
 import React from "react";
 
+const jsonHeader = {'Content-Type': 'application/json'};
+
 class PasswordForm extends React.Component {
     constructor(props) {
         super(props);
@@ -20,6 +22,7 @@ class PasswordForm extends React.Component {
     async previouslySet() {
         var response = await fetch('/chat/passwordPreviouslySet', {
             method: 'POST',
+            headers: jsonHeader,
             body: JSON.stringify({ password: this.state.value })
         });
         if (response.status == 200)
@@ -29,36 +32,37 @@ class PasswordForm extends React.Component {
     };
 
     async checkPassword() {
+        console.log('checking', this.state.value);
         var response = await fetch('/chat/checkPassword', {
             method: 'POST',
+            headers: jsonHeader,
             body: JSON.stringify({ password: this.state.value })
         });
-        if (response.status == 200)
+        if (response.ok)
             return true;
         else
             return false;
     }
 
     async setPassword() {
-        var response = await fetch('/chat/setPassword', {
+        var response = await fetch('/chat/createPassword', {
             method: 'POST',
+            headers: jsonHeader,
             body: JSON.stringify({ password: this.state.value })
         });
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         //alert('A Password was submitted: ' + this.state.value);
-        console.log("submit clicked")
-        if (this.previouslySet() && this.checkPassword()) {
+        event.preventDefault();
+        if (await this.previouslySet() && await this.checkPassword()) {
             this.authCallback()
-        } else if (!this.previouslySet()) {
-            this.setPassword();
-            this.authCallback()
+        } else if (!(await this.previouslySet())) {
+            await this.setPassword();
+            await this.authCallback()
         } else {
             alert('Password is incorrect')
         }
-    
-        event.preventDefault();
     }
 
     render() {
