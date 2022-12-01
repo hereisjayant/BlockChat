@@ -1,10 +1,10 @@
 import React from "react";
 
 class PasswordForm extends React.Component {
-    constructor(props, authCallback) {
+    constructor(props) {
         super(props);
         this.state = { value: '' };
-        this.authCallback = authCallback;
+        this.authCallback = props.authCallback;
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,7 +18,7 @@ class PasswordForm extends React.Component {
     };
 
     async previouslySet() {
-        var response = await fetch('http://localhost:3001/passwordPreviouslySet', {
+        var response = await fetch('/chat/passwordPreviouslySet', {
             method: 'POST',
             body: JSON.stringify({ password: this.state.value })
         });
@@ -29,7 +29,7 @@ class PasswordForm extends React.Component {
     };
 
     async checkPassword() {
-        var response = await fetch('http://localhost:3001/checkPassword', {
+        var response = await fetch('/chat/checkPassword', {
             method: 'POST',
             body: JSON.stringify({ password: this.state.value })
         });
@@ -40,7 +40,7 @@ class PasswordForm extends React.Component {
     }
 
     async setPassword() {
-        var response = await fetch('http://localhost:3001/setPassword', {
+        var response = await fetch('/chat/setPassword', {
             method: 'POST',
             body: JSON.stringify({ password: this.state.value })
         });
