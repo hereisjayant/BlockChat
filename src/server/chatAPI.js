@@ -145,7 +145,7 @@ router
 
     /**
      * Create password to use to encrypt secrets
-     * @bodyParam {string} passwordcheckP
+     * @bodyParam {string} password
      */
     .post('/createPassword', async (req, res) => {
         await keyStorage.createPassword(req.body.password);

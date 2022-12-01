@@ -62,14 +62,17 @@ const App = () => {
   return (
     <div>
       <PasswordForm authCallback={auth} />
-      { isAuth &&
-      <><h1>Current Address: {userPubAddress}</h1>
-      <div>Balance: {userBalance}</div>
-      {isConnected &&
-        <MessageRoom
-          userAddress={userPubAddress}
-        />
-      }</>}
+      {isAuth &&
+        <>
+          <h1>Current Address: {userPubAddress}</h1>
+          <div>Balance: {userBalance}</div>
+          {isConnected &&
+            <MessageRoom
+              userAddress={userPubAddress}
+            />
+          }
+        </>
+      }
     </div>
   )
 }
